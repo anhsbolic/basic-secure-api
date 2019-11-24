@@ -32,42 +32,102 @@ class AuthController extends Controller
 
             DB::commit();
 
-            $data = [
+            $response = [
                 'code' => 1,
                 'message' => 'Anda berhasil mendaftar',
                 'data' => []
             ];
 
-            return response()->json($data, 200);
+            return response()->json($response, 200);
 
         } catch(QueryException $qe) {
             Log::error($qe);
             DB::rollback();
 
-            $data = [
+            $response = [
                 'code' => 2,
                 'message' => 'Username / Email Tidak Tersedia',
                 'data' => []
             ];
 
-            return response()->json($data, 200);
+            return response()->json($response, 200);
 
         } catch(Exception $e) {
             Log::error($e);
             DB::rollback();
 
-            $data = [
+            $response = [
                 'code' => 500,
                 'message' => 'Internal Server Error',
                 'data' => []
             ];
 
-            return response()->json($data, 500);
+            return response()->json($response, 500);
         }
     }
 
     public function login(Request $request) {
-        dd($request->all());
+        // get request data
+        $email = $request->email;
+        $password = $request->password;
+
+        // find user
+        $user = User::where('email', $email)->where('password', $password)->first();
+        
+        // if user not found
+        if (!$user) {
+            $response = [
+                'code' => 2,
+                'message' => 'User Not Found',
+                'data' => []
+            ];
+            return response()->json($response, 200);
+        }
+
+        // if user found
+
+        // create login token
+        try {
+            DB::beginTransaction();
+
+            $token = sha1($email.$password);
+            $user->token = $token;
+            $user->save();
+
+            DB::commit();
+        } catch(QueryException $qe) {
+            Log::error($qe);
+            DB::rollback();
+
+            $response = [
+                'code' => 500,
+                'message' => 'Internal Server Error',
+                'data' => []
+            ];
+
+            return response()->json($response, 500);
+
+        } catch(Exception $e) {
+            Log::error($e);
+            DB::rollback();
+
+            $response = [
+                'code' => 500,
+                'message' => 'Internal Server Error',
+                'data' => []
+            ];
+
+            return response()->json($response, 500);
+        }
+
+        // response user with token
+        $response = [
+            'code' => 2,
+            'message' => 'Loggin Success',
+            'data' => $user
+        ];
+
+        return response()->json($response, 200);
     }
 
     public function logout(Request $request) {
