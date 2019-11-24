@@ -11,6 +11,32 @@
 |
 */
 
+/*
+| =========================================================================
+| GENERAL ROUTES
+| =========================================================================
+*/
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    return sha1(\Illuminate\Support\Str::random(32));
+});
+
+/*
+| =========================================================================
+| AUTH ROUTES
+| =========================================================================
+*/
+$router->group(['prefix' => 'auth'], function () use ($router) {
+    $router->post('/register', ['uses' => 'AuthController@register']);
+    $router->post('/login', ['uses' => 'AuthController@login']);
+    $router->post('/logout', ['uses' => 'AuthController@logout']);
+});
+
+/*
+| =========================================================================
+| USER PROFILES ROUTES
+| =========================================================================
+*/
+$router->group(['prefix' => 'profiles'], function () use ($router) {
+    $router->get('/{id_user}', ['uses' => 'ProfileController@profile']);
+    $router->post('/{id_user}', ['uses' => 'ProfileController@updateProfile']);
 });
