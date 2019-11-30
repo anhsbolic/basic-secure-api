@@ -11,10 +11,12 @@ class StatusTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('status')->insert([
-            ['name' => 'booked'],
-            ['name' => 'paid'],
-            ['name' => 'cancelled'],
-        ]);
+        if (DB::table('status')->get()->count() == 0){
+            DB::table('status')->insert([
+                ['name' => 'booked'],
+                ['name' => 'paid'],
+                ['name' => 'cancelled'],
+            ]);
+        }
     }
 }
