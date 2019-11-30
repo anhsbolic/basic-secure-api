@@ -40,3 +40,24 @@ $router->group(['prefix' => 'profiles'], function () use ($router) {
     $router->get('/{id_user}', ['uses' => 'ProfileController@profile']);
     $router->post('/{id_user}', ['uses' => 'ProfileController@updateProfile']);
 });
+
+/*
+| =========================================================================
+| TICKETS ROUTES
+| =========================================================================
+*/
+$router->group(['prefix' => 'tickets'], function () use ($router) {
+    $router->get('/', ['uses' => 'TicketController@tickets']);
+    $router->get('/{id_ticket}', ['uses' => 'TicketController@ticketDetail']);
+});
+
+/*
+| =========================================================================
+| TICKETS ROUTES
+| =========================================================================
+*/
+$router->group(['prefix' => 'transaction'], function () use ($router) {
+    $router->post('/book', ['uses' => 'TransactionController@book']);
+    $router->post('/pay', ['uses' => 'TransactionController@pay']);
+    $router->get('/paid/{id_transaction}', ['uses' => 'TransactionController@paidDetail']);
+});
