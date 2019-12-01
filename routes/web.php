@@ -56,9 +56,9 @@ $router->group(['prefix' => 'tickets'], function () use ($router) {
 | TRANSACTIONS ROUTES
 | =========================================================================
 */
-$router->group(['prefix' => 'transaction'], function () use ($router) {
-    $router->get('/{id_transaction}', ['uses' => 'TransactionController@paidDetail']);
+$router->group(['prefix' => 'transactions'], function () use ($router) {
+    $router->get('/{id_transaction}', ['uses' => 'TransactionController@detail']);
     $router->post('/book', ['uses' => 'TransactionController@book']);
-    $router->post('/pay', ['uses' => 'TransactionController@pay']);
-    $router->post('/cancel', ['uses' => 'TransactionController@cancel']);
+    $router->put('/pay', ['uses' => 'TransactionController@pay']);
+    $router->put('/cancel', ['uses' => 'TransactionController@cancel']);
 });

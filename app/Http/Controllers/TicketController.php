@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Ticket;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class TicketController extends Controller
 {
