@@ -53,11 +53,12 @@ $router->group(['prefix' => 'tickets'], function () use ($router) {
 
 /*
 | =========================================================================
-| TICKETS ROUTES
+| TRANSACTIONS ROUTES
 | =========================================================================
 */
 $router->group(['prefix' => 'transaction'], function () use ($router) {
+    $router->get('/{id_transaction}', ['uses' => 'TransactionController@paidDetail']);
     $router->post('/book', ['uses' => 'TransactionController@book']);
     $router->post('/pay', ['uses' => 'TransactionController@pay']);
-    $router->get('/paid/{id_transaction}', ['uses' => 'TransactionController@paidDetail']);
+    $router->post('/cancel', ['uses' => 'TransactionController@cancel']);
 });
